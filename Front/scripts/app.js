@@ -31,11 +31,6 @@ var employeesList = [
     }
 ];
 
-var mapFirstName=[];
-var mapLastName=[];
-var mapNumbers=[];
-
-
 function showList() {
     var myTable = '<table class="table table-bordered"" border="1"><tr><th>First Name</th><th>Last Name</th>' +
         '<th>Phone</th><th>Salary</th><th>Show</th><th>Delete</th></tr>';
@@ -44,7 +39,7 @@ function showList() {
         employeesList[i].salary+'</td><td><button type="button" onclick="showEmployee('+i+')">Show</button></td>' +
          '<td><button type="button" onclick="deleteEmployee('+i+')">Delete</button></td></tr>';
     }
-   // myTable+="<tr><td>"+uniqLastName()+"</td></tr>";
+    myTable+="<tr><td>"+frecventFirstNames()+"</td><td>"+uniqLastNames()+"</td><td>"+sumSalary()/employeesList.length+"</td></tr>";
     myTable += '</table>';
     var container = document.getElementById('listcontainer');
     container.innerHTML = myTable;
@@ -92,13 +87,48 @@ function removeLastEmployees(){
     showList();
 }
 
-var NamesFrecv = function (name) {
-    this.name = name;
-    this.frecvent = 1;
+function  frecventFirstNames(){
+    var mapFirstName= new Object();
+    mapFirstName = {};
+    for(var i in employeesList){
+        if(mapFirstName[employeesList[i].firstName] == undefined){
+            mapFirstName[employeesList[i].firstName]=1;
+        }
+        else
+            mapFirstName[employeesList[i].firstName]+=1;
+    }
+
+    var frv=0;
+    var element = null;
+    for(var j in mapFirstName){
+        if(mapFirstName[j] > frv) {
+            frv = mapFirstName[j]
+            element = j;
+        }
+    }
+    return element;
+
 }
 
+function  uniqLastNames(){
+    var mapLastName= new Object();
+    mapLastName = {};
+    for(var i in employeesList){
+        if(mapLastName[employeesList[i].lastName] == undefined){
+            mapLastName[employeesList[i].lastName]=1;
+        }
+        else
+            mapLastName[employeesList[i].lastName]+=1;
+    }
 
-
+    var count=0;
+    for(var j in mapLastName){
+        if(mapLastName[j] == 1) {
+            count += 1;
+        }
+    }
+    return count;
+}
 
 function sortListEmployees () {
     var sortType = parseFloat(document.getElementById("sort").value);
